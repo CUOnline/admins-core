@@ -1,0 +1,82 @@
+﻿@model Admins.Models.HomeViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<img id="logo" src="~/images/cu-online.png" />
+<div id="app">
+    <div id="content">
+
+        <h2>Canvas Admin Directory</h2>
+        <a v-bind:href="webUrl" target="_blank">https://ucdenver.instructure.com</a>
+        <form asp-controller="Home" asp-action="ExternalLogout" method="post" style="float:right">
+            <button type="submit">Log Out</button>
+        </form>
+        <hr />
+
+        <div v-if="loading" class="row mb-3">
+            <div class="col-1">
+                Loading...
+            </div>
+            <div class="col">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" v-bind:style="'width: ' + currentProgress + '%'" v-bind:aria-valuenow="currentProgress" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+
+        @if (Model.Authorized)
+        {
+            <div id="accordion">
+                <div class="card" v-for="subAccount in subAccounts">
+                    <div class="card-header" v-bind:id="'subAccount' + subAccount.id">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" v-bind:data-target="'#subAccountCollapse' + subAccount.id" aria-expanded="true" v-bind:aria-controls="'subAccountCollapse' + subAccount.id">
+                            {{subAccount.name}}
+                        </button>
+                        <div class="float-right badge badge-info"> Admins: <span v-if="subAccount.admins != null">{{subAccount.admins.length}}</span></div>
+                    </div>
+
+                    <div v-bind:id="'subAccountCollapse' + subAccount.id" class="collapse" v-bind:aria-labelledby="'subAccount' + subAccount.id" data-parent="#accordion">
+                        <div class="card-body">
+                            <table class="table table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Last Activity</th>
+                                        <th>Role</th>
+                                        <th>Canvas ID</th>
+                                        <th>SIS ID</th>
+                                    </tr>
+                                </thead>
+                                <tbody v-if="subAccount.admins != null" v-for="admin in subAccount.admins">
+                                    <tr>
+                                        <td><img v-bind:src="admin.avatarUrl" style="height: 50px; width: 50px" /></td>
+                                        <td><a v-bind:href="webUrl + '/users/' + admin.user.id" target="_blank">{{admin.user.name}}</a></td>
+                                        <td><a v-bind:href="'mailto:'+ admin.email">{{admin.email}}</a></td>
+                                        <td>{{admin.lastActivity | formatDate}}</td>
+                                        <td>{{admin.role}}</td>
+                                        <td>{{admin.user.id}}</td>
+                                        <td>{{admin.user.sis_user_id}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <span>You do not have the proper roles to use this tool.</span>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    window.webApiUrl = '@Html.Raw(Model.BaseCanvasUrl)';
+    window.tokenStr = '@Html.Raw(Model.ApiToken)';
+    window.authorized = '@Html.Raw(Model.Authorized)';
+</script>
+<script type="text/javascript" src="~/js/index.js"></script>
