@@ -3,18 +3,19 @@
   "name": "admins",
   "private": true,
   "devDependencies": {
+    "axios": "0.18.0",
     "bootstrap": "4.1.1",
+    "bootstrap-vue": "2.0.0-rc.11",
     "gulp": "^3.9.1",
-    "popper.js": "1.14.3",
-    "merge-stream": "1.0.1",
+    "gulp-typescript": "^5.0.0-alpha.2",
     "jquery": "3.3.1",
     "lodash": "4.17.10",
-    "vue": "2.5.16",
-    "bootstrap-vue": "2.0.0-rc.11",
+    "merge-stream": "1.0.1",
+    "popper.js": "1.14.3",
+    "typescript": "2.9.2",
     "vee-validate": "2.0.9",
-    "vue-resource": "1.5.1",
-    "axios": "0.18.0",
-    "typescript": "2.9.2"
+    "vue": "2.5.16",
+    "vue-resource": "1.5.1"
   },
   "dependencies": {},
   "-vs-binding": {

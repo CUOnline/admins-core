@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Admins", "Admins\Admins.csproj", "{09D910F6-9225-4B39-8F47-C2B51D6EB919}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Admins", "Admins\Admins.csproj", "{09D910F6-9225-4B39-8F47-C2B51D6EB919}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSS.Providers.Canvas", "RSS.Providers.Canvas\RSS.Providers.Canvas.csproj", "{53D03BA0-B29E-4A9C-BB88-DA790E29616F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RSS.Providers.Canvas", "RSS.Providers.Canvas\RSS.Providers.Canvas.csproj", "{53D03BA0-B29E-4A9C-BB88-DA790E29616F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

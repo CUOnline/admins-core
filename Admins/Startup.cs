@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,11 +39,12 @@ namespace Admins
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             }).AddCookie(options =>
             {
+                options.AccessDeniedPath = "/Home/AccessDenied";
                 options.LoginPath = "/login";
                 options.LogoutPath = "/signout";
             }).AddCanvas(options =>
             {
-                options.UserInformationEndpoint = canvasOAuth.ProfileEndpoint;
+                options.UserInformationEndpoint = canvasOAuth.BaseUrl;
                 options.AuthorizationEndpoint = canvasOAuth.AuthorizationEndpoint;
                 options.TokenEndpoint = canvasOAuth.TokenEndpoint;
                 options.ClientId = canvasOAuth.ClientId;
@@ -86,6 +88,8 @@ namespace Admins
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            app.UseCors();
 
             app.UseAuthentication();
 

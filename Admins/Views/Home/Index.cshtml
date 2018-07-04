@@ -38,7 +38,7 @@
 
                     <div v-bind:id="'subAccountCollapse' + subAccount.id" class="collapse" v-bind:aria-labelledby="'subAccount' + subAccount.id" data-parent="#accordion">
                         <div class="card-body">
-                            <table class="table table-responsive">
+                            <table class="table">
                                 <thead>
                                     <tr>
                                         <th></th>
@@ -58,7 +58,8 @@
                                         <td>{{admin.lastActivity | formatDate}}</td>
                                         <td>{{admin.role}}</td>
                                         <td>{{admin.user.id}}</td>
-                                        <td>{{admin.user.sis_user_id}}</td>
+                                        <td v-if="admin.user.sis_user_id != undefined">{{admin.user.sis_user_id}}</td>
+                                        <td v-else>N/A</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -76,7 +77,7 @@
 
 <script type="text/javascript">
     window.webApiUrl = '@Html.Raw(Model.BaseCanvasUrl)';
-    window.tokenStr = '@Html.Raw(Model.ApiToken)';
     window.authorized = '@Html.Raw(Model.Authorized)';
+
 </script>
 <script type="text/javascript" src="~/js/index.js"></script>

@@ -6,7 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Scripts\index.js" />
+    <Content Include="Scripts\index.js.map" />
+    <Content Include="Scripts\index.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.0" />
   </ItemGroup>
 
   <ItemGroup>

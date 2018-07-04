@@ -11,8 +11,8 @@ using System.Security.Claims;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using Admins.Models.Enums;
 using Microsoft.Extensions.Options;
+using Rss.Providers.Canvas.Helpers;
 
 namespace Admins.Controllers
 {
@@ -36,27 +36,20 @@ namespace Admins.Controllers
             {
                 return RedirectToAction("ExternalLogin");
             }
-
-            if (!(await Authorized(appSettings.CanvasAccountId)))
+            
+            var model = new HomeViewModel();
+            if (HttpContext.User.IsInRole(RoleNames.AccountAdmin) || HttpContext.User.IsInRole(RoleNames.HelpDesk))
             {
-                // return unauthorized view
-                var model = new HomeViewModel()
-                {
-                    Authorized = false
-                };
-                return View(model);
+                model.Authorized = true;
+                model.BaseCanvasUrl = canvasApiAuth.BaseUrl;
             }
             else
             {
-                var model = new HomeViewModel()
-                {
-                    Authorized = true,
-                    BaseCanvasUrl = canvasApiAuth.BaseUrl,
-                    ApiToken = canvasApiAuth.ApiKey
-                };
-
-                return View(model);
+                // return unauthorized view
+                model.Authorized = false;
             }
+
+            return View(model);
         }
         
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -90,81 +83,6 @@ namespace Admins.Controllers
         public ActionResult LoggedOut()
         {
             return View();
-        }
-
-        private async Task<bool> Authorized(string accountId)
-        {
-            List<RoleNames> authorizedRoles = new List<RoleNames>()
-            {
-                RoleNames.AccountAdmin,
-                RoleNames.HelpDesk
-            };
-
-            var authenticateResult = await HttpContext.AuthenticateAsync();
-            if (authenticateResult != null)
-            {
-                ViewBag.authenticated = true;
-                
-                var userId = authenticateResult.Principal.Claims.Where(cl => cl.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value;
-                
-                var roles = (await GetAccountRolesForUserAsync(accountId, userId)).Where(x => x.WorkflowState == WorkflowState.Active); // .Where(x => x == WorkflowState.Active);
-
-                if (roles.Select(x => x.Name).Intersect(authorizedRoles).Any())
-                {
-                    return true;
-                }
-                else
-                {
-                    var accountResponse = await canvasClient.GetAsync($"/api/v1/accounts/{accountId}");
-                    if (!accountResponse.IsSuccessStatusCode)
-                    {
-                        ViewBag.error = $"{accountResponse.StatusCode}: {accountResponse.ReasonPhrase}";
-                    }
-
-                    var account = JsonConvert.DeserializeObject<Account>(await accountResponse.Content.ReadAsStringAsync());
-                    ViewBag.error = $"You do not have the proper roles assigned to access information for {account.Name}";
-                }
-            }
-
-            return false;
-        }
-
-        public async Task<List<Role>> GetAccountRolesForUserAsync(string accountId, string userId)
-        {
-            var roles = new List<Role>();
-
-            // Get the account
-            var accountResponse = await canvasClient.GetAsync($"/api/v1/accounts/{accountId}");
-            if (!accountResponse.IsSuccessStatusCode)
-            {
-                return roles;
-            }
-
-            var account = JsonConvert.DeserializeObject<Account>(await accountResponse.Content.ReadAsStringAsync());
-
-            // Get roles for account
-            var response = await canvasClient.GetAsync($"/api/v1/accounts/{accountId}/admins?user_id[]={userId}");
-            if (!response.IsSuccessStatusCode)
-            {
-                return roles;
-            }
-
-            var result = JArray.Parse(await response.Content.ReadAsStringAsync());
-            if (result.Count > 0)
-            {
-                foreach (var role in result.Children<JObject>())
-                {
-                    roles.Add(JsonConvert.DeserializeObject<Role>(role.ToString()));
-                }
-            }
-
-            // Get roles for parent account (recursive)
-            if (!string.IsNullOrWhiteSpace(account.ParentAccountId))
-            {
-                roles.AddRange(await GetAccountRolesForUserAsync(account.ParentAccountId, userId));
-            }
-
-            return roles;
         }
 
         // Used for XSRF protection when adding external logns

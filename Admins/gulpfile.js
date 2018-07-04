@@ -1,6 +1,9 @@
-﻿/// <binding BeforeBuild='scripts' />
+﻿/// <binding BeforeBuild='scripts, compileTS' />
 var gulp = require('gulp');
 var merge = require('merge-stream'); 
+var ts = require("gulp-typescript");
+
+var tsProject = ts.createProject("tsconfig.json");
 
 // Dependency Dirs
 var deps = {
@@ -47,4 +50,10 @@ gulp.task("scripts", function () {
 
     return merge(streams);
 
+});
+
+gulp.task("compileTS", function () {
+    return tsProject.src()
+        .pipe(tsProject())
+        .js.pipe(gulp.dest("wwwroot/js"));
 });

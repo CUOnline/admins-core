@@ -1,9 +1,9 @@
-﻿using Admins.Helpers;
-using Admins.Models.Enums;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Rss.Providers.Canvas.Helpers;
+using RSS.Providers.Canvas.Models.Enums;
 
-namespace Admins.Models
+namespace RSS.Providers.Canvas.Models
 {
     public class Role
     {
@@ -12,7 +12,7 @@ namespace Admins.Models
 
         [JsonProperty(PropertyName = "role")]
         [JsonConverter(typeof(RoleNamesConverter))]
-        public RoleNames Name { get; set; }
+        public string Name { get; set; }
 
         [JsonProperty(PropertyName = "role_id")]
         public string RoleId { get; set; }

@@ -9,6 +9,5 @@ namespace Admins.Models
     {
         public bool Authorized { get; set; }
         public string BaseCanvasUrl { get; set; }
-        public string ApiToken { get; set; }
     }
 }

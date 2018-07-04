@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Admins.Models
+namespace RSS.Providers.Canvas.Models
 {
     public class BaseModel
     {

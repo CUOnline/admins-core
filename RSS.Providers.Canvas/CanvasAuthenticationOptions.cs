@@ -20,6 +20,7 @@ namespace RSS.Providers.Canvas
             ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
             ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
             ClaimActions.MapJsonKey(ClaimTypes.Email, "primary_email");
+            ClaimActions.MapJsonKey(ClaimTypes.Role, "role");
             ClaimActions.MapJsonKey("urn:canvas:avatar_url", "avatar_url");
         }
     }
