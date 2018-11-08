@@ -33,7 +33,7 @@ namespace RSS.Providers.Canvas
             var userId = tokens.Response.SelectToken("user").Value<string>("id");
             var request = new HttpRequestMessage(HttpMethod.Get, $"{Options.UserInformationEndpoint}api/v1/users/{userId}/profile");
 
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", Options.ApiToken);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             var response = await Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, Context.RequestAborted);
@@ -51,7 +51,7 @@ namespace RSS.Providers.Canvas
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
             var principal = new ClaimsPrincipal(identity);
 
-            var roles = await GetAccountRolesForUserAsync(Backchannel, "1", userId, tokens.AccessToken);
+            var roles = await GetAccountRolesForUserAsync(Backchannel, "1", userId, Options.ApiToken);
             foreach (var role in roles)
             {
                 identity.AddClaim(new Claim(ClaimTypes.Role, role));

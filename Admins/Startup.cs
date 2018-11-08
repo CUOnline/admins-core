@@ -33,7 +33,19 @@ namespace Admins
             canvasOAuthSection.Bind(canvasOAuth);
             services.Configure<CanvasOAuth>(canvasOAuthSection);
             services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
-            
+
+            CanvasApiAuth apiAuth = new CanvasApiAuth();
+            var canvasApiAuthSection = Configuration.GetSection(nameof(CanvasApiAuth));
+            canvasApiAuthSection.Bind(apiAuth);
+            services.Configure<CanvasApiAuth>(canvasApiAuthSection);
+
+            services.AddHttpClient("CanvasClient", client =>
+            {
+                client.BaseAddress = new Uri(apiAuth.BaseUrl);
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiAuth.ApiKey);
+            });
+
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -49,18 +61,7 @@ namespace Admins
                 options.TokenEndpoint = canvasOAuth.TokenEndpoint;
                 options.ClientId = canvasOAuth.ClientId;
                 options.ClientSecret = canvasOAuth.ClientSecret;
-            });
-
-            CanvasApiAuth apiAuth = new CanvasApiAuth();
-            var canvasApiAuthSection = Configuration.GetSection(nameof(CanvasApiAuth));
-            canvasApiAuthSection.Bind(apiAuth);
-            services.Configure<CanvasApiAuth>(canvasApiAuthSection);
-
-            services.AddHttpClient("CanvasClient", client =>
-            {
-                client.BaseAddress = new Uri(apiAuth.BaseUrl);
-                client.DefaultRequestHeaders.Add("Accept", "application/json");
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiAuth.ApiKey);
+                options.ApiToken = apiAuth.ApiKey;
             });
 
             services.Configure<CookiePolicyOptions>(options =>

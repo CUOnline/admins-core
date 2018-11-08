@@ -25,13 +25,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             return __awaiter(this, void 0, void 0, function* () {
                 if (authorized) {
                     // Get the schools
-                    let response = yield axios.get('/Canvas/GetSubAccounts');
+                    let response = yield axios.get('/Admins/Canvas/GetSubAccounts');
                     let badValues = [2, 3, 4, 19, 21, 73, 139];
                     this.subAccounts = _.filter(response.data, a => badValues.indexOf(a.id) < 0);
                     this.currentProgress = 25;
                     // Get the admins for those schools
                     for (let i = 0; i < this.subAccounts.length; ++i) {
-                        let adminsResponse = yield axios.get('/Canvas/GetAdmins?subAccountId=' + this.subAccounts[i].id);
+                        let adminsResponse = yield axios.get('/Admins/Canvas/GetAdmins?subAccountId=' + this.subAccounts[i].id);
                         let admins = _.orderBy(adminsResponse.data, 'user.name', 'asc');
                         // combine duplicate admins
                         for (var k = 0; k < admins.length; ++k) {
@@ -50,8 +50,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
                     // build requests
                     var userDataRequests = [];
                     for (let i = 0; i < uniqueUsers.length; ++i) {
-                        userDataRequests.push('/Canvas/GetUserProfile?userId=' + uniqueUsers[i].id);
-                        userDataRequests.push('/Canvas/GetUserPageViews?userId=' + uniqueUsers[i].id);
+                        userDataRequests.push('/Admins/Canvas/GetUserProfile?userId=' + uniqueUsers[i].id);
+                        userDataRequests.push('/Admins/Canvas/GetUserPageViews?userId=' + uniqueUsers[i].id);
                     }
                     // chunk requests so we don't bombard the server
                     var requests = _.chunk(userDataRequests, 20);

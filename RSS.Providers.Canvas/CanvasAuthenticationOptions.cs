@@ -11,6 +11,8 @@ namespace RSS.Providers.Canvas
     /// </summary>
     public class CanvasAuthenticationOptions : OAuthOptions
     {
+        public string ApiToken { get; set; }
+
         public CanvasAuthenticationOptions()
         {
             ClaimsIssuer = CanvasAuthenticationDefaults.Issuer;
