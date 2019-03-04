@@ -19,13 +19,11 @@ namespace Admins.Controllers
     public class HomeController : Controller
     {
         private readonly HttpClient canvasClient;
-        private readonly AppSettings appSettings;
         private readonly CanvasApiAuth canvasApiAuth;
 
-        public HomeController(IHttpClientFactory httpClientFactory, IOptions<AppSettings> settingOptions, IOptions<CanvasApiAuth> authOptions)
+        public HomeController(IHttpClientFactory httpClientFactory, IOptions<CanvasApiAuth> authOptions)
         {
             this.canvasClient = httpClientFactory.CreateClient("CanvasClient");
-            this.appSettings = settingOptions.Value;
             this.canvasApiAuth = authOptions.Value;
         }
 

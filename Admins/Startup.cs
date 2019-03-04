@@ -32,7 +32,6 @@ namespace Admins
             var canvasOAuthSection = Configuration.GetSection(nameof(CanvasOAuth));
             canvasOAuthSection.Bind(canvasOAuth);
             services.Configure<CanvasOAuth>(canvasOAuthSection);
-            services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
 
             CanvasApiAuth apiAuth = new CanvasApiAuth();
             var canvasApiAuthSection = Configuration.GetSection(nameof(CanvasApiAuth));

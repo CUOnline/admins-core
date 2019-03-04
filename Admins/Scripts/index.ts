@@ -18,14 +18,14 @@
             if (authorized) {
 
                 // Get the schools
-                let response = await axios.get('/Admins/Canvas/GetSubAccounts');
+                let response = await axios.get('/Canvas/GetSubAccounts');
                 let badValues = [2, 3, 4, 19, 21, 73, 139];
                 this.subAccounts = _.filter(response.data, a => badValues.indexOf(a.id) < 0);
                 this.currentProgress = 25;
 
                 // Get the admins for those schools
                 for (let i = 0; i < this.subAccounts.length; ++i) {
-                    let adminsResponse = await axios.get('/Admins/Canvas/GetAdmins?subAccountId=' + this.subAccounts[i].id);
+                    let adminsResponse = await axios.get('/Canvas/GetAdmins?subAccountId=' + this.subAccounts[i].id);
                     let admins = _.orderBy(adminsResponse.data, 'user.name', 'asc');
 
                     // combine duplicate admins
@@ -47,8 +47,8 @@
                 // build requests
                 var userDataRequests = [];
                 for (let i = 0; i < uniqueUsers.length; ++i) {
-                    userDataRequests.push( '/Admins/Canvas/GetUserProfile?userId=' + uniqueUsers[i].id );
-                    userDataRequests.push( '/Admins/Canvas/GetUserPageViews?userId=' + uniqueUsers[i].id );
+                    userDataRequests.push( '/Canvas/GetUserProfile?userId=' + uniqueUsers[i].id );
+                    userDataRequests.push( '/Canvas/GetUserPageViews?userId=' + uniqueUsers[i].id );
                 }
 
                 // chunk requests so we don't bombard the server
@@ -102,9 +102,6 @@
         },
         methods: {
             CombineDuplicateAdmins: function(admins) {
-
-
-
                 return admins;
             }
         },
