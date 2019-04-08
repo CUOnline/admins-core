@@ -11,8 +11,7 @@ using Rss.Providers.Canvas.Helpers;
 
 namespace Admins.Controllers
 {
-    // derive from authorize attribute.
-    [Authorize(Roles = RoleNames.AccountAdmin + "," + RoleNames.HelpDesk)]
+    [Authorize(Roles = RoleNames.AccountAdmin + "," + RoleNames.ServiceDesk)]
     [ResponseCache(Duration = 3600)]
     public class CanvasController : Controller
     {

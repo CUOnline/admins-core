@@ -36,7 +36,7 @@ namespace Admins.Controllers
             }
             
             var model = new HomeViewModel();
-            if (HttpContext.User.IsInRole(RoleNames.AccountAdmin) || HttpContext.User.IsInRole(RoleNames.HelpDesk))
+            if (HttpContext.User.IsInRole(RoleNames.AccountAdmin) || HttpContext.User.IsInRole(RoleNames.ServiceDesk))
             {
                 model.Authorized = true;
                 model.BaseCanvasUrl = canvasApiAuth.BaseUrl;

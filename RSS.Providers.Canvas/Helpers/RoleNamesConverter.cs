@@ -11,7 +11,7 @@ namespace Rss.Providers.Canvas.Helpers
     {
         public const string AccountAdmin = "AccountAdmin";
         public const string EnrollmentManager = "Enrollment Manager";
-        public const string HelpDesk = "Help Desk";
+        public const string ServiceDesk = "Service Desk";
         public const string OutcomesAdmin = "Outcomes Admin";
         public const string SubAccountAdmin = "Sub-Account Admin";
         public const string Other = "Other";
@@ -32,7 +32,7 @@ namespace Rss.Providers.Canvas.Helpers
             {
                 case RoleNames.AccountAdmin:
                 case RoleNames.EnrollmentManager:
-                case RoleNames.HelpDesk:
+                case RoleNames.ServiceDesk:
                 case RoleNames.OutcomesAdmin:
                 case RoleNames.SubAccountAdmin:
                     {
